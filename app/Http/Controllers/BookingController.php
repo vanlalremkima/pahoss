@@ -11,6 +11,26 @@ use Illuminate\Support\Facades\DB;
 class BookingController extends Controller
 {
 
+    public function dashboard()
+    {
+        $users=User::where('role','user')->get();
+
+
+        $user_id=Auth::user()->id;
+        // dd($user_id);
+        $user=User::find($user_id);
+        
+        $role = Auth::user()->role; 
+        switch ($role) {
+            case 'administrator':
+                return view('dashboard',compact('users'));
+            break;
+            case 'user':
+                return view('dashboard',compact('user'));
+            break; 
+        }
+    }
+
     public function booking($id)
     {
         
@@ -41,6 +61,7 @@ class BookingController extends Controller
         // generate user details
         $user=User::find($u_id);
         $user_tokken=$booking_token;
+        // $find_user=Booking::where('user_id',$u_id)->get();
         return view('booking.generate',compact('parking','user','user_tokken'));
 
     }
@@ -88,18 +109,20 @@ class BookingController extends Controller
             ->where('status','booked')
             ->get();
 
-        // dd($bookings);
+        //  dd($bookings);
         return view('booking.list',compact('bookings'));
      }
 
 
     public function complete($id)
     {
-        $booking=Booking::findOrFail($id);
+        // dd($id);
+        $booking=Booking::where('token',$id)->get();
+        // dd($booking[0]->id);
+        $book=Booking::find($booking[0]->id);
+        $book->status="completed";
 
-        $booking->status="completed";
-
-        $booking->update();
+        $book->save();
 
         $bookings = DB::table('bookings')
             ->join('parkings', 'bookings.parking_id', '=', 'parkings.id')

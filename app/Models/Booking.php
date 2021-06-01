@@ -20,14 +20,4 @@ class Booking extends Model
 
 
 
-    public function parkings()
-    {
-        return $this->hasMany(Parking::class);
-    }
-
-
-    public function users()
-    {
-        return $this->hasOne(User::class);
-    }
 }

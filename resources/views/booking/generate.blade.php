@@ -9,6 +9,7 @@
 
 </head>
 <body>
+  <x-app-layout>
     <div class="container">
         
         <div class="card" style="width: 18rem;">
@@ -21,8 +22,10 @@
               <br>
               Vehicle Type: <b class="card-link">{{ $user->vehicle_type }}</b>
             </div>
+            <a href="{{ route('parkings.index') }}" type="button" class="btn btn-primary">Back</a>
           </div>
     </div>
+  </x-app-layout>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 
 </body>

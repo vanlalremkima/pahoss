@@ -103,6 +103,10 @@ class ParkingController extends Controller
      */
     public function destroy($id)
     {
-        //
+       $parking=Parking::findOrFail($id);
+       $parking->delete();
+
+       $parkings=Parking::all();
+        return view('parking.index',compact('parkings'));
     }
 }

@@ -11,7 +11,9 @@
 <body>
   <x-app-layout>
     <div class="container">
+      @if(Auth::user() && Auth::user()->role == 'administrator')
         <a class="btn btn-primary" href="{{ route('parkings.create') }}">Create</a>
+      @endif
         <table class="table">
             <thead>
               <tr>
@@ -20,8 +22,14 @@
                 <th scope="col">Location</th>
                 <th scope="col">Available Space</th>
                 <th scope="col">Available Time</th>
-                <th scope="col">Action</th>
-                <th scope="col">Booking</th>
+                @if(Auth::user() && Auth::user()->role == 'administrator')
+                  <th scope="col">Action</th>
+                @endif
+
+                @if(Auth::user() && Auth::user()->role == 'user')
+                  <th scope="col">Booking</th>
+                  <th>Cancel</th>
+                @endif
               </tr>
             </thead>
             <tbody>
@@ -32,20 +40,30 @@
                     <td>{{ $parking->location }}</td>
                     <td>{{ $parking->available_space }}</td>
                     <td>{{ $parking->available_time }}</td>
-                    <td>
-                      @if(Auth::user() && Auth::user()->role == 'administrator')
-                        <a class="btn btn-danger" href="{{ route('parkings.edit',$parking->id) }}">Edit</a>
-                      @endif
-                      </td>
 
+                    @if(Auth::user() && Auth::user()->role == 'administrator')
+                    <td>
+                        <a class="btn btn-warning" href="{{ route('parkings.edit',$parking->id) }}">Edit</a>
+                    </td>
+                    <td>
+                      <form action="{{ route('parkings.destroy',$parking->id) }}" method="post">
+                        @csrf
+                        @method('delete')
+                          <button type="submit" class="btn btn-danger" >Delete</button>
+                      </form>
+                      
+                    </td>
+                    @endif
+
+                    @if(Auth::user() && Auth::user()->role == 'user')
                     <td>
                       <a class="btn btn-info" href="{{ route('bookings',$parking->id) }}">Book</a>
                     </td>
-
+                    
                     <td>
-                      
                       <a class="btn btn-info" href="{{ route('bookings.view',$parking->id) }}">Cancel</a>
                     </td>
+                    @endif
                   </tr>
                 @endforeach
               

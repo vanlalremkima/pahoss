@@ -11,11 +11,13 @@
                 </div>
 
                 <!-- Navigation Links -->
+                @if(Auth::user() && Auth::user()->role == 'administrator')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
                 </div>
+                @endif
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('parkings.index') }}" :active="request()->routeIs('dashboard')">
@@ -23,11 +25,13 @@
                     </x-jet-nav-link>
                 </div>
 
+                @if(Auth::user() && Auth::user()->role == 'administrator')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('bookings.list') }}" :active="request()->routeIs('dashboard')">
                         Goto Booking list
                     </x-jet-nav-link>
                 </div>
+                @endif
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
