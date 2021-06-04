@@ -57,11 +57,15 @@
 
                     @if(Auth::user() && Auth::user()->role == 'user')
                     <td>
-                      <a class="btn btn-info" href="{{ route('bookings',$parking->id) }}">Book</a>
+                      @if(($parking->available_space) >> 0)
+                        <a class="btn btn-info" href="{{ route('bookings',$parking->id) }}">Book</a>
+                      @else
+                        Limit reached
+                      @endif
                     </td>
                     
                     <td>
-                      <a class="btn btn-info" href="{{ route('bookings.view',$parking->id) }}">Cancel</a>
+                        <a class="btn btn-info" href="{{ route('bookings.view',$parking->id) }}">Cancel</a>
                     </td>
                     @endif
                   </tr>

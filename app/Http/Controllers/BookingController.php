@@ -121,9 +121,16 @@ class BookingController extends Controller
         // dd($booking[0]->id);
         $book=Booking::find($booking[0]->id);
         $book->status="completed";
-
+        
         $book->save();
 
+
+        $parking=Parking::find($book->parking_id);
+        // dd($parking->id);
+        $parking->available_space++;
+        $parking->save();
+
+        
         $bookings = DB::table('bookings')
             ->join('parkings', 'bookings.parking_id', '=', 'parkings.id')
             ->join('users', 'bookings.user_id', '=', 'users.id')
